@@ -1,0 +1,4 @@
+ircbot
+======
+
+IRC bot
