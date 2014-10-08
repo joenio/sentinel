@@ -1,0 +1,8 @@
+bot:
+  name: sentinel
+  servers:
+    freenode:
+      address: irc.freenode.org
+      name: Freenode
+      channels:
+        - '#cinch-bots'
