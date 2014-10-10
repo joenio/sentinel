@@ -6,4 +6,3 @@ bot:
       name: Freenode
       channels:
         - '#cinch-bots'
-        - '#softwarepublico'
