@@ -1,5 +1,6 @@
 require 'sentinel/configuration'
 require 'sentinel/irc_bot'
+require 'sentinel/keywords_manager'
 
 module Sentinel
   class BotsManager
@@ -36,7 +37,7 @@ module Sentinel
             c.nick = bot_name
           end
 
-          on :message, "hello" do |m|
+          on :message, KeywordsManager.keywords_regex do |m|
             m.reply "Hello, #{m.user.nick}"
           end
         end
@@ -47,33 +48,12 @@ module Sentinel
 
     private
 
-    # Loads keywords from the appropriate config file
-    #
-    # @return [Array] The array of keywords
-    def keywords
-      unless @keywords
-        @keywords = YAML.load_file('../config/keywords.yml')['keywords']
-      end
-
-      @keywords
-    end
-
-    # Returns the keywords on a regex format ready to used for matching incoming
-    # messages.
-    def keyword_regex
-      string = ""
-
-      keywords.each do |keyword|
-        string << "(#{keyword})|"
-      end
-    end
-
     # Returns true if a message contains one of the keywords
     #
     # @param [String] message a message from a IRC channel
     # @return [Boolean]
     def has_keyword?(message)
-      @keywords.each do |w|
+      KeywordsManager.keywords.each do |w|
         return true if message.include? w
       end
 
