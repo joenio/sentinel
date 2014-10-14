@@ -1,0 +1,6 @@
+# This file defines the outputs to be used for storing events.
+# Currently, sentinel only supports CSV files, but we plan on supporting YAML, JSON and XML formats.
+# This file also defines the path to the directory in which to save the output files.
+outputs:
+  - CSV
+directory_path: logs/
