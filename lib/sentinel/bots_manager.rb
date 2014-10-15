@@ -1,14 +1,19 @@
 require 'sentinel/configuration'
 require 'sentinel/irc_bot'
 require 'sentinel/keywords_manager'
+require 'sentinel/events'
+require 'sentinel/adapter'
 
 module Sentinel
   class BotsManager
+
+    include Events
 
     # A Array with all bots in it.
     #
     # return[Array]
     attr_reader :irc_bots
+
     # Starts all bots.
     #
     # @return [void]
@@ -22,7 +27,6 @@ module Sentinel
     # @return [void]
     def load_bots
       @irc_bots = []
-
 
       config = Configuration.load_config_file
 
@@ -38,7 +42,8 @@ module Sentinel
           end
 
           on :message, KeywordsManager.keywords_regex do |m|
-            m.reply "Hello, #{m.user.nick}"
+            #m.reply "Hello, #{m.user.nick}"
+            Sentinel::AbstractAdapter.save_event(m, Sentinel::Events::MESSAGE)
           end
         end
 

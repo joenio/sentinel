@@ -1,4 +1,5 @@
 require 'sentinel/adapter/csv_adapter'
+require 'sentinel/events'
 
 module Sentinel
   class AbstractAdapter
@@ -32,7 +33,7 @@ module Sentinel
     # @returns [void]
     def self.save_event(event, type)
       case type
-      when 'message'
+      when Sentinel::Events::MESSAGE
         self.save_message(event)
       else
         self.save_message(event)
