@@ -42,11 +42,11 @@ module Sentinel
           end
 
           on :message, KeywordsManager.keywords_regex do |m|
+            puts ("="*36)+"MESSAGE"+("="*36), m.inspect, "="*80
             #m.reply "Hello, #{m.user.nick}"
             Sentinel::AbstractAdapter.save_event(m, Sentinel::Events::MESSAGE)
           end
         end
-
         @irc_bots << irc_bot
       end
     end

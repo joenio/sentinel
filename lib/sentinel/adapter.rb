@@ -5,6 +5,7 @@ module Sentinel
   class AbstractAdapter
 
     @@outputs = []
+    @@path = nil
 
 
     # Returns formats defined on config/output.yml.
@@ -21,7 +22,7 @@ module Sentinel
     #
     # @returns [String] A string with the path where to save output files.
     # Default is logs/.
-    def self.log_path
+    def self.log_dir
       @@path = YAML.load_file('config/output.yml')['directory_path'] if (@@path.nil? || @@path.empty?)
 
       (@@path.nil? || @@path.empty?) ? 'logs/' : @@path
@@ -42,13 +43,13 @@ module Sentinel
 
     protected
 
-    def self.save_message(event)
+    def self.save_message(message)
       self.formats.each do |output|
         case output
         when 'CSV'
-          CSVAdapter.save_message(event)
+          CSVAdapter.save_message(message)
         else
-          CSVAdapter.save_message(event)
+          CSVAdapter.save_message(message)
         end
       end
     end
