@@ -20,7 +20,7 @@ module Sentinel
 
     # Returns the path where to save the ouput files.
     #
-    # @returns [String] A string with the path where to save output files.
+    # @return [String] A string with the path where to save output files.
     # Default is logs/.
     def self.log_dir
       @@path = YAML.load_file('config/output.yml')['directory_path'] if (@@path.nil? || @@path.empty?)
@@ -31,7 +31,7 @@ module Sentinel
     # Saves the event on the log file.
     # @param [Object, String] The event received from the IRC channel and a
     # string containing the type of the event.
-    # @returns [void]
+    # @return [void]
     def self.save_event(event, type)
       case type
       when Sentinel::Events::MESSAGE
