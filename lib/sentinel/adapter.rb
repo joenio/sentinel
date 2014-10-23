@@ -1,5 +1,6 @@
 require 'sentinel/adapter/csv_adapter'
 require 'sentinel/events'
+require 'uri'
 
 module Sentinel
   class AbstractAdapter
@@ -52,6 +53,14 @@ module Sentinel
           CSVAdapter.save_message(message)
         end
       end
+    end
+
+    # Extracts URLs from the content of IRC messages.
+    #
+    # @param [Message] The IRC message captured
+    # @return [String] A String with all URLs within the message content, separated by commas.
+    def self.extract_urls(message)
+      return URI.extract(message.message).to_s.gsub(/(\")|(\[)|(\])/, '')
     end
   end
 end

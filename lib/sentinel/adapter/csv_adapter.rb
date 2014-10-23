@@ -13,7 +13,7 @@ module Sentinel
       def self.save_message(message)
         begin
           CSV.open(self.log_file_path, 'a', {:force_quotes => true}) do |csv|
-            csv << [message.time.to_s, message.channel.name, message.user.nick, message.message]
+            csv << [message.time.to_s, message.channel.name, message.user.nick, message.message, self.extract_urls(message)]
           end
         rescue Errno::ENOENT
           FileUtils::mkdir_p self.log_dir
