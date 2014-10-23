@@ -60,7 +60,16 @@ module Sentinel
     # @param [Message] The IRC message captured
     # @return [String] A String with all URLs within the message content, separated by commas.
     def self.extract_urls(message)
-      return URI.extract(message.message).to_s.gsub(/(\")|(\[)|(\])/, '')
+      return URI.extract(message.message, ['http', 'https', 'ftp']).to_s.gsub(/(\")|(\[)|(\])/, '')
+    end
+
+    # Extracts the channel name from which a message has been sent,if it exists.
+    # If it doesn't, it returns "PRIVATE_MSG"
+    #
+    # @param [Message] The IRC message captured
+    # @return [String] A String with the channel name or the string "PRIVATE_MSG".
+    def self.channel_name(message)
+      message.channel.nil? ? "PRIVATE_MSG" : message.channel.name
     end
   end
 end
