@@ -23,7 +23,7 @@ module Sentinel
     #
     # @return [String] A string with the path where to save output files.
     # Default is logs/.
-    def self.log_dir
+    def self.output_dir
       @@path = YAML.load_file('config/output.yml')['directory_path'] if (@@path.nil? || @@path.empty?)
 
       (@@path.nil? || @@path.empty?) ? 'logs/' : @@path

@@ -12,11 +12,11 @@ module Sentinel
       # @return [void]
       def self.save_message(message)
         begin
-          CSV.open(self.log_file_path, 'a', {:force_quotes => true}) do |csv|
+          CSV.open(self.output_file_path, 'a', {:force_quotes => true}) do |csv|
             csv << [message.time.to_s, self.channel_name(message), message.user.nick, message.message, self.extract_urls(message)]
           end
         rescue Errno::ENOENT
-          FileUtils::mkdir_p self.log_dir
+          FileUtils::mkdir_p self.output_dir
           retry
         end
       end
@@ -26,8 +26,8 @@ module Sentinel
       # Returns the path to the CSV file.
       #
       # @return [String] A string with the path to the file.
-      def self.log_file_path
-        log_dir + 'log.csv'
+      def self.output_file_path
+        output_dir + 'log.csv'
       end
     end
   end
