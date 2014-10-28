@@ -44,9 +44,51 @@ module Sentinel
         end
         @bots << bot
       end
+
+      set_handlers
     end
 
-    protected
+    # Sets handlers for events such as messages, channel joins and leaves
+    def set_handlers
+      @bots.each do |bot|
+        on_channel(bot)
+        on_private(bot)
+        on_join(bot)
+        on_leaving(bot)
+        on_topic(bot)
+      end
+    end
+
+    def on_channel(bot)
+      bot.on :channel, // do |m|
+        nil
+        #Sentinel::Adapter.save_event(m, Sentinel::Events::MESSAGE)
+      end
+    end
+
+    def on_private(bot)
+      bot.on :private, // do |m|
+        nil
+      end
+    end
+
+    def on_join(bot)
+      bot.on :join, // do |m|
+        nil
+      end
+    end
+
+    def on_leaving(bot)
+      bot.on :leaving do |m|
+        nil
+      end
+    end
+
+    def on_topic(bot)
+      bot.on :topic, // do |m|
+        nil
+      end
+    end
 
     # Sets a logger for the bot
     def self.get_logger
