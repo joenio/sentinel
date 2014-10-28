@@ -2,7 +2,7 @@
 
 
 Sentinel is a program developed as part of a network programming course at
-Institute of Mathematics and Statistics University of São Paulo (IME-USP). It's
+Institute of Mathematics and Statistics University of São Paulo (IME-USP). Its
 purpose is to extract messages related to computer network security on IRC
 channels.
 
