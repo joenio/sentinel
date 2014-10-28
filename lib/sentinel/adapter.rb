@@ -36,21 +36,21 @@ module Sentinel
     def self.save_event(event, type)
       case type
       when Sentinel::Events::MESSAGE
-        self.save_message(event)
+        self.save_message_with_keyword(event)
       else
-        self.save_message(event)
+        self.save_message_with_keyword(event)
       end
     end
 
     protected
 
-    def self.save_message(message)
+    def self.save_message_with_keyword(message)
       self.formats.each do |output|
         case output
         when 'CSV'
-          CSVAdapter.save_message(message)
+          CSVAdapter.save_message_with_keyword(message)
         else
-          CSVAdapter.save_message(message)
+          CSVAdapter.save_message_with_keyword(message)
         end
       end
     end

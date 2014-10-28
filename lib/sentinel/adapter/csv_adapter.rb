@@ -10,7 +10,7 @@ module Sentinel
       #
       # @param [Cinch::Message] A IRC messge.
       # @return [void]
-      def self.save_message(message)
+      def self.save_message_with_keyword(message)
         begin
           CSV.open(self.output_file_path, 'a', {:force_quotes => true}) do |csv|
             csv << [message.time.to_s, self.channel_name(message), message.user.nick, message.message, self.extract_urls(message)]
