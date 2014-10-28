@@ -29,5 +29,17 @@ module Sentinel
 
       Regexp.new(string, Regexp::IGNORECASE)
     end
+
+    # Returns true if a message contains one of the keywords
+    #
+    # @param [String] message a message from a IRC channel
+    # @return [Boolean]
+    def self.has_keyword?(message)
+      KeywordsManager.keywords.each do |w|
+        return true if message.include? w
+      end
+
+      false
+    end
   end
 end

@@ -1,29 +1,23 @@
 require 'cinch'
+require 'sentinel/events'
+require 'sentinel/adapter'
+require 'sentinel/keywords_manager'
 
 module Sentinel
   class IrcBot
 
-    attr_reader :bot
+    include Cinch::Plugin
 
-    # Initializes a Cinch bot with the block received as argument
-    def initialize(&b)
-      @bot = Cinch::Bot.new(&b)
-      @bot.loggers << new_logger
-    end
+    set :prefix, //
 
-    protected
+    match KeywordsManager.keywords_regex, method: :save_message
 
-    # Sets a logger for the bot
-    def new_logger
-      begin
-        log = File.open('logs/log.log', 'a')
-        logger = Cinch::Logger::FormattedLogger.new(log)
-        logger.level = :log
-        return logger
-      rescue Errno::ENOENT
-        FileUtils::mkdir_p 'logs'
-        retry
-      end
+    # Requests the adapter to save messages.
+    #
+    # @param [Message]
+    # @return [void]
+    def save_message(m)
+      Sentinel::AbstractAdapter.save_event(m, Sentinel::Events::MESSAGE)
     end
   end
 end

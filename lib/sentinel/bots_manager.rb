@@ -1,8 +1,6 @@
 require 'sentinel/configuration'
 require 'sentinel/irc_bot'
-require 'sentinel/keywords_manager'
-require 'sentinel/events'
-require 'sentinel/adapter'
+require 'cinch'
 
 module Sentinel
   class BotsManager
@@ -12,13 +10,13 @@ module Sentinel
     # A Array with all bots in it.
     #
     # return[Array]
-    attr_reader :irc_bots
+    attr_reader :bots
 
     # Starts all bots.
     #
     # @return [void]
     def start_bots
-      @irc_bots.each {|irc_bot| irc_bot.bot.start}
+      @bots.each {|bot| bot.bot.start}
     end
 
     # Load bots from config file and add a configuration to each according to
@@ -26,7 +24,7 @@ module Sentinel
     #
     # @return [void]
     def load_bots
-      @irc_bots = []
+      @bots = []
 
       config = Configuration.load_config_file
 
@@ -34,35 +32,33 @@ module Sentinel
 
       # Iterates over every server on the config file
       config['bot']['servers'].each_value do |server|
-        irc_bot = Sentinel::IrcBot.new do
+        bot = Cinch::Bot.new do
           configure do |c|
             c.server = server['address']
             c.channels = server['channels']
             c.nick = bot_name
+            c.plugins.plugins = [IrcBot] # Sets the plugin as the IrcBot class
           end
 
-          on :message, KeywordsManager.keywords_regex do |m|
-            puts ("="*36)+"MESSAGE"+("="*36), m.inspect, "="*80
-            #m.reply "Hello, #{m.user.nick}"
-            Sentinel::AbstractAdapter.save_event(m, Sentinel::Events::MESSAGE)
-          end
+          loggers << Sentinel::BotsManager.get_logger
         end
-        @irc_bots << irc_bot
+        @bots << bot
       end
     end
 
-    private
+    protected
 
-    # Returns true if a message contains one of the keywords
-    #
-    # @param [String] message a message from a IRC channel
-    # @return [Boolean]
-    def has_keyword?(message)
-      KeywordsManager.keywords.each do |w|
-        return true if message.include? w
+    # Sets a logger for the bot
+    def self.get_logger
+      begin
+        log = File.open('logs/log.log', 'a')
+        logger = Cinch::Logger::FormattedLogger.new(log)
+        logger.level = :log
+        return logger
+      rescue Errno::ENOENT
+        FileUtils::mkdir_p 'logs'
+        retry
       end
-
-      false
     end
   end
 end
