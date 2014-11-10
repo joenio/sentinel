@@ -36,9 +36,17 @@ module Sentinel
     def self.save_event(event, type)
       case type
       when Sentinel::Events::MESSAGE
-        self.save_message_with_keyword(event)
+        self.save_message(event)
+      when Sentinel::Events::PRIVATE
+        self.save_private_messages(event)
+      when Sentinel::Events::JOIN
+        self.save_join(event)
+      when Sentinel::Events::LEAVING
+        self.save_leaving(event)
+      when Sentinel::Events::TOPIC
+        self.save_topic(event)
       else
-        self.save_message_with_keyword(event)
+        self.save_message(event)
       end
     end
 

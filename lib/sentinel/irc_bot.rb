@@ -17,7 +17,7 @@ module Sentinel
     # @param [Message]
     # @return [void]
     def save_message_with_keyword(m)
-      Sentinel::AbstractAdapter.save_event(m, Sentinel::Events::MESSAGE)
+      Sentinel::AbstractAdapter.save_message_with_keyword(m)
     end
   end
 end

@@ -60,33 +60,32 @@ module Sentinel
     end
 
     def on_channel(bot)
-      bot.on :channel, // do |m|
-        nil
-        #Sentinel::Adapter.save_event(m, Sentinel::Events::MESSAGE)
+      bot.on :channel, // do |e|
+        Sentinel::Adapter.save_event(e, Sentinel::Events::MESSAGE)
       end
     end
 
     def on_private(bot)
       bot.on :private, // do |m|
-        nil
+        Sentinel::Adapter.save_event(e, Sentinel::Events::PRIVATE)
       end
     end
 
     def on_join(bot)
       bot.on :join, // do |m|
-        nil
+        Sentinel::Adapter.save_event(e, Sentinel::Events::JOIN)
       end
     end
 
     def on_leaving(bot)
       bot.on :leaving do |m|
-        nil
+        Sentinel::Adapter.save_event(e, Sentinel::Events::LEAVING)
       end
     end
 
     def on_topic(bot)
       bot.on :topic, // do |m|
-        nil
+        Sentinel::Adapter.save_event(e, Sentinel::Events::TOPIC)
       end
     end
 
