@@ -54,46 +54,26 @@ module Sentinel
     protected
 
     def self.save_message(event)
-      self.formats.each do |output|
-        case output
-        when 'CSV'
-          CSVAdapter.save_message(event)
-        else
-          CSVAdapter.save_message(event)
-        end
+      self.formats.each do |adapter|
+        adapter.save_message(event)
       end
     end
 
     def self.save_private_messages(event)
-      self.formats.each do |output|
-        case output
-        when 'CSV'
-          CSVAdapter.save_private_messages(event)
-        else
-          CSVAdapter.save_private_messagesge(event)
-        end
+      self.formats.each do |adapter|
+        adapter.save_private_messages(event)
       end
     end
 
     def self.save_join(event)
-      self.formats.each do |output|
-        case output
-        when 'CSV'
-          CSVAdapter.save_join(event)
-        else
-          CSVAdapter.save_join(event)
-        end
+      self.formats.each do |adapter|
+        adapter.save_join(event)
       end
     end
 
     def self.save_leaving(event)
-      self.formats.each do |output|
-        case output
-        when 'CSV'
-          CSVAdapter.save_leaving(event)
-        else
-          CSVAdapter.save_leaving(event)
-        end
+      self.formats.each do |adapter|
+        adapter.save_leaving(event)
       end
     end
 
