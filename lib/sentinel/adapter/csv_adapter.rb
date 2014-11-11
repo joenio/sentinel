@@ -42,7 +42,7 @@ module Sentinel
       # @return [void]
       def self.save_private_messages(message)
         begin
-          CSV.open(self.output_dir + self.channel_name(message) + '.csv', 'a', {:force_quotes => true}) do |csv|
+          CSV.open(self.output_dir + message.user.nick + '.csv', 'a', {:force_quotes => true}) do |csv|
             csv << [message.time.to_s, "PRIVATE_MESSAGE", message.user.nick, message.message]
           end
         rescue Errno::ENOENT
