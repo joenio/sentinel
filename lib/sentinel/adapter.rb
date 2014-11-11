@@ -17,6 +17,7 @@ module Sentinel
       @@outputs = YAML.load_file('config/output.yml')['outputs'] if (@@outputs.nil? || @@outputs.empty?)
 
       (@@outputs.nil? || @@outputs.empty?) ? ['CSV'] : @@outputs
+      @@outputs.map{ |output| eval "#{output}Adapter" }
     end
 
     # Returns the path where to save the ouput files.
@@ -45,13 +46,8 @@ module Sentinel
     protected
 
     def self.save_message_with_keyword(message)
-      self.formats.each do |output|
-        case output
-        when 'CSV'
-          CSVAdapter.save_message_with_keyword(message)
-        else
-          CSVAdapter.save_message_with_keyword(message)
-        end
+      self.formats.each do |adapter|
+        adapter.save_message_with_keyword(message)
       end
     end
 
