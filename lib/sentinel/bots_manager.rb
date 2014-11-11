@@ -1,3 +1,4 @@
+require 'sentinel/adapter'
 require 'sentinel/configuration'
 require 'sentinel/irc_bot'
 require 'cinch'
@@ -60,33 +61,32 @@ module Sentinel
     end
 
     def on_channel(bot)
-      bot.on :channel, // do |m|
-        nil
-        #Sentinel::Adapter.save_event(m, Sentinel::Events::MESSAGE)
+      bot.on :channel, // do |e|
+        Sentinel::AbstractAdapter.save_event(e, Sentinel::Events::MESSAGE)
       end
     end
 
     def on_private(bot)
-      bot.on :private, // do |m|
-        nil
+      bot.on :private, // do |e|
+        Sentinel::AbstractAdapter.save_event(e, Sentinel::Events::PRIVATE)
       end
     end
 
     def on_join(bot)
-      bot.on :join, // do |m|
-        nil
+      bot.on :join, // do |e|
+        Sentinel::AbstractAdapter.save_event(e, Sentinel::Events::JOIN)
       end
     end
 
     def on_leaving(bot)
-      bot.on :leaving do |m|
-        nil
+      bot.on :leaving do |e|
+        Sentinel::AbstractAdapter.save_event(e, Sentinel::Events::LEAVING)
       end
     end
 
     def on_topic(bot)
-      bot.on :topic, // do |m|
-        nil
+      bot.on :topic, // do |e|
+        Sentinel::AbstractAdapter.save_event(e, Sentinel::Events::TOPIC)
       end
     end
 

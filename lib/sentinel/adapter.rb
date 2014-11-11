@@ -37,13 +37,65 @@ module Sentinel
     def self.save_event(event, type)
       case type
       when Sentinel::Events::MESSAGE
-        self.save_message_with_keyword(event)
+        self.save_message(event)
+      when Sentinel::Events::PRIVATE
+        self.save_private_messages(event)
+      when Sentinel::Events::JOIN
+        self.save_join(event)
+      when Sentinel::Events::LEAVING
+        self.save_leaving(event)
+      when Sentinel::Events::TOPIC
+        self.save_topic(event)
       else
-        self.save_message_with_keyword(event)
+        self.save_message(event)
       end
     end
 
     protected
+
+    def self.save_message(event)
+      self.formats.each do |output|
+        case output
+        when 'CSV'
+          CSVAdapter.save_message(event)
+        else
+          CSVAdapter.save_message(event)
+        end
+      end
+    end
+
+    def self.save_private_messages(event)
+      self.formats.each do |output|
+        case output
+        when 'CSV'
+          CSVAdapter.save_private_messages(event)
+        else
+          CSVAdapter.save_private_messagesge(event)
+        end
+      end
+    end
+
+    def self.save_join(event)
+      self.formats.each do |output|
+        case output
+        when 'CSV'
+          CSVAdapter.save_join(event)
+        else
+          CSVAdapter.save_join(event)
+        end
+      end
+    end
+
+    def self.save_leaving(event)
+      self.formats.each do |output|
+        case output
+        when 'CSV'
+          CSVAdapter.save_leaving(event)
+        else
+          CSVAdapter.save_leaving(event)
+        end
+      end
+    end
 
     def self.save_message_with_keyword(message)
       self.formats.each do |adapter|
